@@ -1,0 +1,19 @@
+name: Test + build Image
+
+on:
+  push:
+    branches:
+      - e2e_avalanchejs
+
+jobs:
+  e2e_test:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Kurtosis Tests
+        env: # Secret as an environment variable
+          KURTOSIS_CLIENT_ID: ${{ secrets.kurtosis_client_id }}
+          KURTOSIS_CLIENT_SECRET: ${{ secrets.kurtosis_client_secret }}
+          DOCKER_USERNAME: ${{ secrets.docker_username }}
+          DOCKER_PASS: ${{ secrets.docker_pass }}
+        run: .github/workflows/run_e2e_tests.sh avalanchejs --client-id $KURTOSIS_CLIENT_ID --client-secret $KURTOSIS_CLIENT_SECRET
